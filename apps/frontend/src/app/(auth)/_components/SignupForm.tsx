@@ -126,7 +126,7 @@ const SignupForm = () => {
             name="password"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className=" text-[#6b7280] text-sm mb-2">Password</FormLabel>
+                <FormLabel className=" text-[#6b7280] text-sm">Password</FormLabel>
                 <FormControl>
                   <Input
                     className="w-full text-sm bg-white border-blue-300 focus:border-blue-500  focus:bg-[#eaf5fb] !mt-0"

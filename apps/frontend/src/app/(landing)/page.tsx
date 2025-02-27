@@ -4,7 +4,7 @@ import Hero from "./_components/Hero";
  
 export default function Home() {
   return (
-    <main>
+    <main className="box">
       <Header />
       <Hero/>
     </main>
