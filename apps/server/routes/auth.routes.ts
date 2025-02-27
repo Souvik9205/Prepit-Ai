@@ -5,7 +5,7 @@ import {
   regenerateTokenController,
   signupController,
   tokenVerifyController,
-} from "../controllers/auth.controller";
+} from "../controller/auth.controller";
 const authRouter = Router();
 
 authRouter.post("/login", loginController);
