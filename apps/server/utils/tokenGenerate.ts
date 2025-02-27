@@ -6,7 +6,7 @@ export async function GenerateAccessToken(userId: string): Promise<string> {
     { userId },
     process.env.JWT_ACCESS_TOKEN || JWT_ACCESS_TOKEN,
     {
-      expiresIn: "1h",
+      expiresIn: "15d",
     }
   );
 }

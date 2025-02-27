@@ -26,8 +26,6 @@ export const loginService = async (
         status: 404,
         data: {
           message: "User not found",
-          accessToken: "",
-          refreshToken: "",
         },
       };
     }
@@ -38,20 +36,17 @@ export const loginService = async (
         status: 401,
         data: {
           message: "Invalid credentials",
-          accessToken: "",
-          refreshToken: "",
         },
       };
     }
-    const Atoken = await GenerateAccessToken(user.id);
-    const Rtoken = await GenerateRefressToken(user.id);
+    const token = await GenerateAccessToken(user.id);
+    // const Rtoken = await GenerateRefressToken(user.id);
 
     return {
       status: 200,
       data: {
         message: "Login successful",
-        accessToken: Atoken,
-        refreshToken: Rtoken,
+        token: token,
       },
     };
   } catch (error) {
@@ -59,8 +54,6 @@ export const loginService = async (
       status: 500,
       data: {
         message: `Internal server error, ${error}`,
-        accessToken: "",
-        refreshToken: "",
       },
     };
   }
@@ -172,8 +165,6 @@ export const OTPVerificationService = async (
         status: 409,
         data: {
           message: "User already exists",
-          accessToken: "",
-          refreshToken: "",
         },
       };
     }
@@ -187,8 +178,6 @@ export const OTPVerificationService = async (
         status: 404,
         data: {
           message: "OTP Not Found",
-          accessToken: "",
-          refreshToken: "",
         },
       };
     }
@@ -198,8 +187,6 @@ export const OTPVerificationService = async (
         status: 400,
         data: {
           message: "Invalid OTP",
-          accessToken: "",
-          refreshToken: "",
         },
       };
     }
@@ -217,15 +204,16 @@ export const OTPVerificationService = async (
         id: existingOtp.id,
       },
     });
-    const Atoken = await GenerateAccessToken(newUser.id);
-    const Rtoken = await GenerateRefressToken(newUser.id);
+    const token = await GenerateAccessToken(newUser.id);
+    // const Rtoken = await GenerateRefressToken(newUser.id);
 
     return {
       status: 200,
       data: {
         message: "Signup successful",
-        accessToken: Atoken,
-        refreshToken: Rtoken,
+        // accessToken: Atoken,
+        // refreshToken: Rtoken,
+        token: token,
       },
     };
   } catch (error) {
@@ -233,8 +221,6 @@ export const OTPVerificationService = async (
       status: 500,
       data: {
         message: `Internal server error, ${error}`,
-        accessToken: "",
-        refreshToken: "",
       },
     };
   }
