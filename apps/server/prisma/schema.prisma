@@ -1,0 +1,146 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  name      String?
+  imgURL    String? 
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  jobPosts   JobPost[]
+  interviews Interview[]
+}
+
+model Otp {
+  id        String @id @default(cuid())
+  email     String
+  otp       String
+
+  expiresAt DateTime
+}
+
+model JobPost {
+  id              String         @id @default(uuid())
+  ownerId         String
+  owner           User           @relation(fields: [ownerId], references: [id])
+  category        String
+  roles           String[]       
+  videoRequired   Boolean        @default(false)
+  questionType    QuestionType   @default(AI_GENERATED)
+  followUp        Boolean        @default(true)
+  totalQuestions  Int            @default(5)
+  resumeRequired  Boolean        @default(false)
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  jobType         InterviewType
+
+  invites         InterviewInvite[]
+  interviews      Interview[]
+  jobQuestions    JobQuestion[]
+}
+
+model JobQuestion {
+  id         String   @id @default(uuid())
+  jobPostId  String
+  jobPost    JobPost  @relation(fields: [jobPostId], references: [id])
+  question   String
+  order      Int
+  createdAt  DateTime @default(now())
+}
+
+model InterviewInvite {
+  id         String         @id @default(uuid())
+  jobPostId  String
+  jobPost    JobPost        @relation(fields: [jobPostId], references: [id])
+  email      String         
+  token      String         
+  status     InviteStatus   @default(PENDING)
+  createdAt  DateTime       @default(now())
+
+  interview Interview?
+}
+
+model Interview {
+  id                String         @id @default(uuid())
+  candidateId       String?        
+  candidate         User?          @relation(fields: [candidateId], references: [id])
+
+  jobPostId         String        
+  jobPost           JobPost       @relation(fields: [jobPostId], references: [id])
+
+  interviewInviteId String?        @unique
+  interviewInvite   InterviewInvite? @relation(fields: [interviewInviteId], references: [id])
+  
+  status            InterviewStatus  @default(PENDING)
+  evaluationData    EvaluationData? 
+  feedback          String?     
+  
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+
+  qas               InterviewQA[]
+}
+
+model InterviewQA {
+  id           String    @id @default(uuid())
+  interviewId  String
+  interview    Interview @relation(fields: [interviewId], references: [id])
+  question     String
+  answer       String  
+  order        Int      
+  createdAt    DateTime  @default(now())
+}
+
+model EvaluationData {
+  id               String @id @default(uuid())
+  interviewId      String @unique
+  interview        Interview @relation(fields: [interviewId], references: [id])
+
+  relevanceRatting Int @default(0)
+  fumbleRatting    Int @default(0)
+  behaviourRatting Int @default(0)
+
+  questionCount    Int @default(0)
+}
+
+enum QuestionType {
+  HARDCODED
+  AI_GENERATED
+}
+
+enum InterviewType {
+  MOCK
+  JOB
+}
+
+enum Difficulty {
+  EASY
+  MEDIUM
+  HARD
+}
+
+enum InviteStatus {
+  PENDING
+  COMPLETED
+}
+
+enum InterviewStatus {
+  PENDING
+  COMPLETED
+}
