@@ -1,6 +1,6 @@
 import express from "express";
 import cors from "cors";
-
+import dotenv from "dotenv";
 import authRouter from "./routes/auth.routes";
 import jobRouter from "./routes/job.routes";
 import inviteRouter from "./routes/inviteInterview.routes";
@@ -10,6 +10,7 @@ import interviewRouter from "./routes/interview.routes";
 import aiRouter from "./routes/ai.routes";
 
 const app = express();
+dotenv.config();
 
 app.use(
   cors({

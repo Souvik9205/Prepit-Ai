@@ -1,12 +1,8 @@
 import { hash, compare } from "../utils/script";
 import prisma from "../utils/PrismaClient";
-import {
-  GenerateAccessToken,
-  GenerateRefressToken,
-} from "../utils/tokenGenerate";
+import { GenerateAccessToken } from "../utils/tokenGenerate";
 import { successfulAuthResponse } from "../types";
 import { Mailer } from "../utils/Mailer";
-import { JWT_SECRET } from "../utils/Secret";
 import jwt from "jsonwebtoken";
 import { GenerateRandomOTP } from "../utils/OTPgenerate";
 
@@ -230,10 +226,9 @@ export const refreshTokenService = async (
   refreshToken: string
 ): Promise<{ status: number; accessToken: string; message: string }> => {
   try {
-    const decoded = jwt.verify(
-      refreshToken,
-      process.env.JWT_SECRET || JWT_SECRET
-    ) as { userId: string };
+    const decoded = jwt.verify(refreshToken, process.env.JWT_SECRET!) as {
+      userId: string;
+    };
 
     const newAccessToken = await GenerateAccessToken(decoded.userId);
 

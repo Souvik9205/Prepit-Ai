@@ -15,7 +15,7 @@ export const getUserController = async (
     res.status(result.status).json(result.data);
   } catch (error) {
     console.error("Get user error:", error);
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({ message: `Server error, ${error}` });
   }
 };
 

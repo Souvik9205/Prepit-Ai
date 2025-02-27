@@ -6,7 +6,6 @@ import {
   OTPVerificationService,
 } from "../services/auth.service";
 import jwt from "jsonwebtoken";
-import { JWT_SECRET } from "../utils/Secret";
 
 export const loginController = async (
   req: Request,
@@ -103,7 +102,7 @@ export const tokenVerifyController = async (
     return;
   }
   try {
-    jwt.verify(refreshToken, process.env.JWT_SECRET || JWT_SECRET);
+    jwt.verify(refreshToken, process.env.JWT_SECRET!);
     res.status(200).json({ valid: true });
   } catch (error) {
     res.status(400).json({ valid: false, message: "Invalid or expired token" });

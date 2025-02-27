@@ -10,6 +10,7 @@ export const jobCreateService = async (
   data: {
     message: string;
     job: any;
+    id?: string;
   };
 }> => {
   try {
@@ -53,6 +54,7 @@ export const jobCreateService = async (
       data: {
         message: "Job created successfully",
         job: job,
+        id: job.id,
       },
     };
   } catch (error) {
@@ -160,6 +162,7 @@ export const getUserJobPostsService = async (
         followUp: true,
         totalQuestions: true,
         resumeRequired: true,
+        jobQuestions: true,
         createdAt: true,
         updatedAt: true,
       },

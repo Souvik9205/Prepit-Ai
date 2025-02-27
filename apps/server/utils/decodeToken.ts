@@ -1,12 +1,8 @@
 import jwt from "jsonwebtoken";
-import { JWT_SECRET } from "./Secret";
-
+const secret = process.env.JWT_SECRET;
 export function decodeToken(token: string): string {
   try {
-    const decoded = jwt.verify(
-      token,
-      process.env.JWT_SECRET || JWT_SECRET
-    ) as jwt.JwtPayload;
+    const decoded = jwt.verify(token, secret!) as jwt.JwtPayload;
 
     if (!decoded || !decoded.userId) {
       throw new Error("Invalid token payload");
